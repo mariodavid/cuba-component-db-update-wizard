@@ -64,10 +64,10 @@ class DbUpdateWizard extends AbstractWindow {
 
         if (dbUpdateWizardService.updateAvaliable) {
 
-            if (!dbUpdateWizardConfiguration.executed) {
-                enableDbUpdateWizard()
-            } else {
+            if (dbUpdateWizardConfiguration.executed) {
                 showAlreadyExecutedMessage()
+            } else {
+                enableDbUpdateWizard()
             }
         }
         else {
