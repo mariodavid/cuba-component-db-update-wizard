@@ -15,14 +15,13 @@ buildscript {
     }
     dependencies {
         classpath "com.haulmont.gradle:cuba-plugin:$cubaVersion"
-        classpath 'net.saliman:gradle-cobertura-plugin:2.3.2'
     }
 }
 
-def globalModule = project(':dbupdatewizard-global')
-def coreModule = project(':dbupdatewizard-core')
-def guiModule = project(':dbupdatewizard-gui')
-def webModule = project(':dbupdatewizard-web')
+def globalModule = project(':db-update-wizard-global')
+def coreModule = project(':db-update-wizard-core')
+def guiModule = project(':db-update-wizard-gui')
+def webModule = project(':db-update-wizard-web')
 
 def servletApi = 'org.apache.tomcat:tomcat-servlet-api:8.0.26'
 
@@ -40,17 +39,8 @@ cuba {
         dir = "$project.rootDir/deploy/tomcat"
         port = 8659
     }
-    uploadRepository {
-        if (cuba.artifact.isSnapshot) {
-            url = System.env.UPLOAD_REPOSITORY_SNAPSHOT
-        } else {
-            url = System.env.UPLOAD_REPOSITORY_RELEASE
-        }
-
-        user = System.env.UPLOAD_REPOSITORY_USERNAME
-        password = System.env.UPLOAD_REPOSITORY_PASSWORD
-    }
     ide {
+         
         vcs = 'Git'
     }
 }
@@ -62,38 +52,6 @@ dependencies {
 
 def hsql = 'org.hsqldb:hsqldb:2.2.9'
 
-allprojects {
-    apply plugin: 'net.saliman.cobertura'
-}
-
-
-def files = subprojects
-        .findAll{ !it.name.toLowerCase().contains('theme') }
-        .collect { new File(it.projectDir, '/build/cobertura/cobertura.ser')}
-def sourceDirs = subprojects
-        .findAll{ !it.name.toLowerCase().contains('theme') }
-        .collect { new File(it.projectDir, '/src')}
-
-cobertura {
-    coverageFormats = ['html', 'xml']
-    coverageMergeDatafiles = files
-    coverageCheckTotalBranchRate = 0
-    coverageCheckTotalLineRate = 0
-    coverageCheckHaltOnFailure = true
-    coverageSourceDirs = sourceDirs
-//    coverageCheckLineRate = 1
-    coverageCheckRegexes = [[regex: '.*\\$.*', branchRate: 0, lineRate: 0]]
-
-}
-
-
-test.dependsOn(subprojects.collect{ ":${it.name}:test"} )
-test.finalizedBy(project.tasks.cobertura)
-test.finalizedBy(project.tasks.coberturaCheck)
-
-
-
-
 configure([globalModule, coreModule, guiModule, webModule]) {
     apply(plugin: 'java')
     apply(plugin: 'maven')
@@ -102,9 +60,6 @@ configure([globalModule, coreModule, guiModule, webModule]) {
 
     dependencies {
         testCompile('junit:junit:4.12')
-        testCompile('org.spockframework:spock-core:1.0-groovy-2.4')
-        testCompile('org.springframework:spring-test:4.3.1.RELEASE')
-        testRuntime "cglib:cglib-nodep:3.2.4"
     }
 
     task sourceJar(type: Jar) {
@@ -119,40 +74,6 @@ configure([globalModule, coreModule, guiModule, webModule]) {
 
 configure([globalModule, coreModule, guiModule, webModule]) {
     apply(plugin: 'groovy')
-    apply plugin: 'net.saliman.cobertura'
-    apply plugin: 'codenarc'
-
-    codenarc {
-        toolVersion = "0.24"
-        ignoreFailures = false
-        reportFormat = 'html'
-        reportsDir = new File("./build/reports/codenarc")
-    }
-
-
-    codenarcMain {
-        configFile = rootProject.file("config/codenarc/rulesMain.groovy")
-    }
-    codenarcTest {
-        configFile = rootProject.file("config/codenarc/rulesTests.groovy")
-    }
-
-
-    cobertura {
-        coverageFormats = ['html', 'xml']
-        coverageIgnoreTrivial = true
-        coverageIgnores = ['org.slf4j.Logger.*']
-        coverageReportDir = new File("$buildDir/reports/cobertura")
-
-        coverageExcludes = [
-                '.*Generator',
-                '.*Enum',
-                '.*Hilfe.*' // Hilfe wird vorerst deaktiviert, da die Hilfe noch einem großen Refactoring unterliegt und dies bisher nur ein Proof of Concept ist
-        ]
-    }
-
-    test.finalizedBy(project.tasks.cobertura)
-    test.finalizedBy(project.tasks.coberturaCheck)
 
     sourceSets {
         main { groovy { srcDirs = ["src"] } }
@@ -163,13 +84,13 @@ configure([globalModule, coreModule, guiModule, webModule]) {
 configure(globalModule) {
     task enhance(type: CubaEnhancing)
 
+    
     jar {
         manifest {
             attributes('App-Component-Id': cuba.artifact.group)
             attributes('App-Component-Version': cuba.artifact.version + (cuba.artifact.isSnapshot ? '-SNAPSHOT' : ''))
         }
     }
-
     
 }
 
@@ -190,7 +111,7 @@ configure(coreModule) {
 
     task cleanConf(description: 'Cleans up conf directory') {
         doLast {
-            def dir = new File(cuba.tomcat.dir, '/conf/dbupdatewizard-core')
+            def dir = new File(cuba.tomcat.dir, '/conf/db-update-wizard-core')
             if (dir.isDirectory()) {
                 ant.delete(includeemptydirs: true) {
                     fileset(dir: dir, includes: '**/*', excludes: 'local.app.properties')
@@ -200,8 +121,8 @@ configure(coreModule) {
     }
 
     task deploy(dependsOn: [assemble, cleanConf], type: CubaDeployment) {
-        appName = 'dbupdatewizard-core'
-        appJars('dbupdatewizard-global', 'dbupdatewizard-core')
+        appName = 'db-update-wizard-core'
+        appJars('db-update-wizard-global', 'db-update-wizard-core')
     }
 
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
@@ -230,7 +151,7 @@ configure(guiModule) {
     task deployConf(type: Copy) {
         from file('src')
         include "de/diedavids/cuba/dbupdatewizard/**"
-        into "$cuba.tomcat.dir/conf/dbupdatewizard"
+        into "$cuba.tomcat.dir/conf/db-update-wizard"
     }
 }
 
@@ -258,17 +179,17 @@ configure(webModule) {
     task deployConf(type: Copy) {
         from file('src')
         include "de/diedavids/cuba/dbupdatewizard/**"
-        into "$cuba.tomcat.dir/conf/dbupdatewizard"
+        into "$cuba.tomcat.dir/conf/db-update-wizard"
     }
 
     task clearMessagesCache(type: CubaClearMessagesCache) {
-        appName = 'dbupdatewizard'
+        appName = 'db-update-wizard'
     }
     deployConf.dependsOn clearMessagesCache
 
     task cleanConf(description: 'Cleans up conf directory') {
         doLast {
-            def dir = new File(cuba.tomcat.dir, '/conf/dbupdatewizard')
+            def dir = new File(cuba.tomcat.dir, '/conf/db-update-wizard')
             if (dir.isDirectory()) {
                 ant.delete(includeemptydirs: true) {
                     fileset(dir: dir, includes: '**/*', excludes: 'local.app.properties')
@@ -278,8 +199,8 @@ configure(webModule) {
     }
 
     task deploy(dependsOn: [assemble, cleanConf], type: CubaDeployment) {
-        appName = 'dbupdatewizard'
-        appJars('dbupdatewizard-global', 'dbupdatewizard-gui', 'dbupdatewizard-web')
+        appName = 'db-update-wizard'
+        appJars('db-update-wizard-global', 'db-update-wizard-gui', 'db-update-wizard-web')
     }
 }
 
@@ -287,13 +208,13 @@ configure(webModule) {
 
 
 
-task undeploy(type: Delete, dependsOn: ':dbupdatewizard-web:cleanConf') {
+task undeploy(type: Delete, dependsOn: ':db-update-wizard-web:cleanConf') {
     delete("$cuba.tomcat.dir/shared")
-    delete("$cuba.tomcat.dir/webapps/dbupdatewizard-core")
-    delete("$cuba.tomcat.dir/webapps/dbupdatewizard")
+    delete("$cuba.tomcat.dir/webapps/db-update-wizard-core")
+    delete("$cuba.tomcat.dir/webapps/db-update-wizard")
 }
 
-task restart(dependsOn: ['stop', ':dbupdatewizard-core:deploy', ':dbupdatewizard-web:deploy'], description: 'Redeploys applications and restarts local Tomcat') {
+task restart(dependsOn: ['stop', ':db-update-wizard-core:deploy', ':db-update-wizard-web:deploy'], description: 'Redeploys applications and restarts local Tomcat') {
     doLast {
         ant.waitfor(maxwait: 6, maxwaitunit: 'second', checkevery: 2, checkeveryunit: 'second') {
             not {
@@ -309,8 +230,3 @@ task wrapper(type: Wrapper) {
 }
 
 apply from: 'extra.gradle'
-
-
-clean {
-    delete = ['build/libs', 'build/tmp']
-}

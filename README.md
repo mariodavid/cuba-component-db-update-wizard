@@ -47,5 +47,5 @@ In order to make the db wizard aware of your bean, you have to register it in th
 
 ## DB Update Wizard
 
-The UI that the User can use to run the custom DB Update is placed under "Administration" > "Db Update Wizard".
+The UI that the User can use to run the custom DB Update is placed under "Administration" > "DB-Update Wizard".
 

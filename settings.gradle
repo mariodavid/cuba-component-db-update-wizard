@@ -1,6 +1,6 @@
 rootProject.name = 'cuba-component-db-update-wizard'
-include(':dbupdatewizard-global', ':dbupdatewizard-core', ':dbupdatewizard-gui', ':dbupdatewizard-web')
-project(':dbupdatewizard-global').projectDir = new File(settingsDir, 'modules/global')
-project(':dbupdatewizard-core').projectDir = new File(settingsDir, 'modules/core')
-project(':dbupdatewizard-gui').projectDir = new File(settingsDir, 'modules/gui')
-project(':dbupdatewizard-web').projectDir = new File(settingsDir, 'modules/web')
+include(':db-update-wizard-global', ':db-update-wizard-core', ':db-update-wizard-gui', ':db-update-wizard-web')
+project(':db-update-wizard-global').projectDir = new File(settingsDir, 'modules/global')
+project(':db-update-wizard-core').projectDir = new File(settingsDir, 'modules/core')
+project(':db-update-wizard-gui').projectDir = new File(settingsDir, 'modules/gui')
+project(':db-update-wizard-web').projectDir = new File(settingsDir, 'modules/web')
