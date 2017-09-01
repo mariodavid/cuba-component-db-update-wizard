@@ -41,6 +41,9 @@ To create a custom DB-Update in your code, where you want to connect to another 
         }
     }
  
+In order to make the db wizard aware of your bean, you have to register it in the `spring.xml` of the core module of your application like this:
+  
+     <bean id="ddcduw_DbUpdateWizardService" class="com.company.myapp.core.MyCustomDbUpdateWizardServiceBean" />
 
 ## DB Update Wizard
 
