@@ -12,6 +12,7 @@ class DefaultDbUpdateWizardServiceBean implements DbUpdateWizardService {
         false
     }
 
+    @SuppressWarnings('GetterMethodCouldBeProperty')
     @Override
     String getDbUpdateWizardStartMessage() {
         null
