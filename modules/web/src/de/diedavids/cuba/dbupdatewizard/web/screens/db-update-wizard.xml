@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="de.diedavids.cuba.dbupdatewizard.web.screens.DbUpdateWizard"
+        messagesPack="de.diedavids.cuba.dbupdatewizard.web.screens">
+    <dialogMode height="600"
+                forceDialog="true"
+                width="800"/>
+    <dsContext>
+        <datasource id="preconditionValidationDs"
+                    class="de.diedavids.cuba.dbupdatewizard.wizard.Message"
+                    datasourceClass="de.diedavids.cuba.dbupdatewizard.web.screens.PreconditionsValidationDatasource"/>
+
+        <collectionDatasource id="updateResultsDs"
+                    class="de.diedavids.cuba.dbupdatewizard.wizard.Message"
+                    datasourceClass="de.diedavids.cuba.dbupdatewizard.web.screens.UpdateResultsDatasource"/>
+    </dsContext>
+    <actions>
+        <action id="startWizardAction"
+                caption="msg://startWizard"
+                enable="false"
+                icon="icons/run.png"
+                invoke="startWizard"/>
+        <action id="executeUpdateAction"
+                caption="msg://execute"
+                icon="icons/run.png"
+                invoke="executeUpdate"/>
+        <action id="cancelWizardAction"
+                caption="mainMsg://action.cancel"
+                icon="icons/cancel.png"
+                invoke="cancelWizard"/>
+        <action id="closeWizardAction"
+                caption="mainMsg://actions.Ok"
+                icon="icons/ok.png"
+                enable="false"
+                invoke="closeWizard"/>
+        <action id="downloadDiagnoseResultsAction"
+                caption="msg://downloadResult"
+                icon="icons/download.png"
+                invoke="downloadDiagnoseResult"/>
+    </actions>
+    <layout expand="wizardAccordion" spacing="true">
+        <accordion id="wizardAccordion">
+            <tab id="step1"
+                 caption="msg://step1Title"
+                 margin="true"
+                 expand="dbUpdateWizardStartTextScrollBox"
+                 spacing="true">
+                <scrollBox id="dbUpdateWizardStartTextScrollBox" width="100%" spacing="true">
+                    <label
+                            id="dbUpdateWizardErrorMessage"
+                            stylename="failure"
+                            width="100%"
+                    />
+                    <label
+                            visible="false"
+                            id="dbUpdateAvailableMessage"
+                            value="msg://dbUpdateAvailableMessage"
+                            stylename="success"
+                            width="100%"
+                    />
+                    <label
+                            visible="false"
+                            id="dbUpdateWizardStartMessage"
+                            htmlEnabled="true"
+                            width="100%"
+                    />
+                </scrollBox>
+                <buttonsPanel align="TOP_RIGHT">
+                    <button
+                            id="startWizardBtn"
+                            action="startWizardAction"
+                    />
+                </buttonsPanel>
+            </tab>
+            <tab id="step2"
+                 caption="msg://step2Title"
+                 enable="false"
+                 margin="true"
+                 expand="preconditionValidationTable"
+                 spacing="true">
+                <table id="preconditionValidationTable"
+                       width="100%"
+                       columnControlVisible="false"
+                       showSelection="false"
+                       sortable="false"
+                       multiselect="false">
+                    <columns>
+                        <column id="message" caption="msg://preconditionsValidationTableMessageColumn"/>
+                    </columns>
+                    <rows datasource="preconditionValidationDs"/>
+                </table>
+                <buttonsPanel align="TOP_RIGHT">
+                    <button id="executeUpdateBtn"
+                            action="executeUpdateAction"
+                    />
+                </buttonsPanel>
+            </tab>
+            <tab id="step3"
+                 caption="msg://step3Title"
+                 enable="false"
+                 margin="true"
+                 spacing="true">
+
+                <table id="updateResultsTable"
+                width="100%"
+                columnControlVisible="false"
+                showSelection="false"
+                sortable="false"
+                multiselect="false">
+                <columns>
+                <column id="message" caption="msg://diagnoseWizardResultsTableMessageColumn"/>
+                </columns>
+                <rows datasource="updateResultsDs" />
+                </table>
+            </tab>
+        </accordion>
+        <buttonsPanel align="TOP_RIGHT">
+            <button id="closeWizard"
+                    action="closeWizardAction"
+            />
+            <button id="cancelWizard"
+                    action="cancelWizardAction"
+            />
+        </buttonsPanel>
+    </layout>
+</window>
