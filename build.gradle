@@ -33,7 +33,7 @@ apply(plugin: 'cuba')
 cuba {
     artifact {
         group = 'de.diedavids.cuba.dbupdatewizard'
-        version = '0.1'
+        version = '0.1.1'
         isSnapshot = true
     }
     tomcat {
