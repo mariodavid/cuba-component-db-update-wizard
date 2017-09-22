@@ -9,20 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.2.0] - 2017-09-22
 
-### Added
-- loads dynamic metadata information from BuildInfo (CUBA 6.6 feature) [#6][#9]
-- support for audit log of runtime diagnose execution [#10]
-- database support for HSQLDB, MySQL, PostgreSQL and Oracle
-
 ### Dependencies
 - CUBA 6.6.x
 
-## [0.1.0] - 2017-06-28
+## [0.1.0] - 2017-09-22
 
 ### Added
-- interactive groovy console
-- interactive SQL console
-- diagnose wizard for non-interactive support cases
+- UI wizard for manual execution of the db update process 
 
 
 ### Dependencies
