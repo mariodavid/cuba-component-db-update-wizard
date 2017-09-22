@@ -21,6 +21,10 @@
                   value="+de/diedavids/cuba/dbupdatewizard/spring.xml"/>
         <property name="cuba.mainMessagePack"
                   value="+de.diedavids.cuba.dbupdatewizard.core"/>
+        <artifact classifier="db"
+                  configuration="dbscripts"
+                  ext="zip"
+                  name="db-update-wizard-core"/>
     </module>
     <module blocks="web,desktop"
             dependsOn="global"
