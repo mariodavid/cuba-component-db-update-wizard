@@ -5,6 +5,9 @@
 
 This application component can be used for creating one-off custom DB updates that should be executed by the administrator through the UI.
 
+For normal / small-delta changes of the DB, the default CUBA DB-update scripts mechanisms should be used. 
+But sometimes there are migrations from an existing database schema from another framework e.g, which are hard to do through the default mechanisms.
+This is where this application components comes into play.
 
 ## Installation
 
