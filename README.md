@@ -39,8 +39,8 @@ The latest version is: `0.2.0`
 
 Add custom application component to your project:
 
-* Artifact group: `de.diedavids.cuba.runtimediagnose`
-* Artifact name: `runtime-diagnose-global`
+* Artifact group: `de.diedavids.cuba.dbupdatewizard`
+* Artifact name: `db-update-wizard-global`
 * Version: *add-on version*
 
 ## Usage
