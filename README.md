@@ -1,3 +1,4 @@
+[ ![Download](https://api.bintray.com/packages/mariodavid/cuba-components/cuba-component-db-update-wizard/images/download.svg) ](https://bintray.com/mariodavid/cuba-components/cuba-component-db-update-wizard/_latestVersion)
 [![license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Build Status](https://travis-ci.org/mariodavid/cuba-component-db-update-wizard.svg?branch=master)](https://travis-ci.org/mariodavid/cuba-component-db-update-wizard)
 
@@ -39,7 +40,7 @@ This is where this application components comes into play.
 | 6.5.x            | 0.1.x          |
 
 
-The latest version is: `0.2.0`
+The latest version is: [ ![Download](https://api.bintray.com/packages/mariodavid/cuba-components/cuba-component-db-update-wizard/images/download.svg) ](https://bintray.com/mariodavid/cuba-components/cuba-component-db-update-wizard/_latestVersion)
 
 Add custom application component to your project:
 
